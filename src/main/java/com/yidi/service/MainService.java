@@ -68,7 +68,7 @@ public class MainService implements TextInfoBytypeFactory {
 				if(text.contains("猫")||userpets.get(0).getType()==1) {
 
 				}else {//狗
-					if (lastRecord.isEmpty()) {//新对话...
+					if (lastRecord.isEmpty()||lastRecord==null) {//新对话...
 						if(initalparameters.size()==0){//没有参数
 							//API
 						}else {
@@ -95,6 +95,7 @@ public class MainService implements TextInfoBytypeFactory {
 						}else {
 							ReturnInfo answeredinfo=newconversation(text);
 							this.reply=answeredinfo.getInfo();
+							process.insertReturnInfo(answeredinfo);
 						}
 					}
 				}

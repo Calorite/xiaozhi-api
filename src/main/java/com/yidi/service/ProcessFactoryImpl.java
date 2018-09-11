@@ -42,15 +42,20 @@ public class ProcessFactoryImpl implements ProcessFactory {
 				returninstance.setSpecial(rs.getInt(9));
 				String uncheck=rs.getString(8);
 				Set<Integer> set1=new HashSet<Integer>();
-				if (uncheck.contains(",")) {
-					String[] uncheckarr=uncheck.split(",");
-					for(String thisone:uncheckarr){
-						set1.add(Integer.valueOf(thisone));
-					}
+				if(uncheck.equals("null")){
+					returninstance.setUncheckparameter(set1);
 				}else {
-					set1.add(Integer.valueOf(uncheck));
+					if (uncheck.contains(",")) {
+						String[] uncheckarr=uncheck.split(",");
+						for(String thisone:uncheckarr){
+							set1.add(Integer.valueOf(thisone));
+						}
+					}else {
+						set1.add(Integer.valueOf(uncheck));
+					}
+					returninstance.setUncheckparameter(set1);
 				}
-				returninstance.setUncheckparameter(set1);
+				
 				list1.add(returninstance);
 			}
 			return list1;
@@ -74,8 +79,15 @@ public class ProcessFactoryImpl implements ProcessFactory {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		String[] params={infoinstance.getUsername(),infoinstance.getRecieved(),infoinstance.getInfo(),datetime,String.valueOf(infoinstance.getId()),infoinstance.getParameter(),String.valueOf(infoinstance.getStatus()),uncheck,String.valueOf(infoinstance.getSpecial())};
-		int rows=helper.executeUpdate(sql, params);
+		int rows=0;
+		if (infoinstance.getUncheckparameter().size()>0) {
+			String[] params={infoinstance.getUsername(),infoinstance.getRecieved(),infoinstance.getInfo(),datetime,String.valueOf(infoinstance.getId()),infoinstance.getParameter(),String.valueOf(infoinstance.getStatus()),uncheck,String.valueOf(infoinstance.getSpecial())};
+			rows=helper.executeUpdate(sql, params);
+		}else {
+			String[] params={infoinstance.getUsername(),infoinstance.getRecieved(),infoinstance.getInfo(),datetime,String.valueOf(infoinstance.getId()),infoinstance.getParameter(),String.valueOf(infoinstance.getStatus()),"",String.valueOf(infoinstance.getSpecial())};
+			rows=helper.executeUpdate(sql, params);
+		}
+		
 		if (rows>0) {
 			return true;
 		}

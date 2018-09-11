@@ -14,7 +14,7 @@ public class Application {
 		try {
 			//String name=new String(args[0].getBytes(),"UTF-8");
 			//String text=new String(args[2].getBytes(),"UTF-8");
-			MainService main=new MainService(sender, "",text );
+			MainService main=new MainService("test", "test","胃口特别好饮食过量");
 			System.out.println(main.getReply());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
